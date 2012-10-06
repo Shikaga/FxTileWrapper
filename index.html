@@ -1,26 +1,47 @@
 <html>
 	<head>
-		<script type="text/javascript" src="js/main.js"></script>
+
 		<title>New Development Project</title>
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<div id="testbar"><a class="testbar" href="test/test.html" target="_blank">Run the Tests!</a></div>
 		Hello World!
-		<div id="tweets" style="overflow: auto; height: 200px; width: 200px;" onscroll=onScroll(this);>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-			<p>Lol</p>
-		</div>
-</html>
+		<div id="topbar" style="height:30px"></div>
+		<div id="tweets" style="border: 1px solid black; overflow: auto; height: 200px; width: 200px;" onscroll=onScroll(this);>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			<div style="height: 30px; border: 1px solid black"><span style="height: 20px; width: 20px; display: inline-block; background-color: black; margin: 5px; "></span>Lol</div>
+			</div>
+		<div id="bottombar" style="height:30px"></div>
+		<script type="text/javascript" src="js/main.js"></script>
+		<script>		
+			function renderImages()
+			{
+				var topNumber = lh.getTweetsInTopBar();
+				tbh.renderImages(topNumber);
+				var bottomNumber = lh.getTweetsInBottomBar();
+				bbh.renderImages(bottomNumber);
+			}
+			
+			function onScroll(e)
+			{
+				lh.setPosition(e.scrollTop);
+				renderImages();
+			}
+		
+			var tbh = new TopBarHandler(document.getElementById("topbar"));
+			var bbh = new BottomBarHandler(document.getElementById("bottombar"));
+			var lh = new LocationHandler(10,200,30);
+			renderImages();
+		</script>
+				
 </body>
+</html>

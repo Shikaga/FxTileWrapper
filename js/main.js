@@ -3,11 +3,6 @@ function add(number1, number2)
 	return number1 + number2;
 }
 
-function onScroll(e)
-{
-	console.log(e.scrollTop);
-}
-
 /**
 * This class determines where all the pics should be
 * It calculates this based on TweetBar size, Tweet Size and number of tweets
@@ -53,9 +48,18 @@ LocationHandler.prototype.getTweetsInBottomBar = function()
 * This class handles what images are shown in the top bar.
 */
 
-var TopBarhandler = function()
+var TopBarHandler = function(element)
 {
+	this.topBar = element;
+}
 
+TopBarHandler.prototype.renderImages = function(number)
+{
+	this.topBar.innerHTML = "";
+	for(var i=0; i < number; i++)
+	{
+		this.topBar.appendChild(getImage());
+	}
 }
 
 /**
@@ -69,9 +73,29 @@ var TweetHandler = function()
 /**
 * This class handles what images are shown in the bottom bar.
 */
-var BottomBarHandler = function()
+var BottomBarHandler = function(element)
 {
+	this.bottomBar = element;
+}
 
+BottomBarHandler.prototype.renderImages = function(number)
+{
+	this.bottomBar.innerHTML = "";
+	for(var i=0; i < number; i++)
+	{
+		this.bottomBar.appendChild(getImage());
+	}
+}
+
+function getImage()
+{
+	var image = document.createElement("span");
+	image.style["height"] = "20px";
+	image.style["width"] = "20px";
+	image.style["display"] = "inline-block";
+	image.style["background-color"] = "black";
+	image.style["margin"] = "5px";
+	return image;
 }
 
 //Array of images
