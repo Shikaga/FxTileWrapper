@@ -73,7 +73,7 @@ TopBarHandler.prototype.addTweets = function(tweets)
 TopBarHandler.prototype.renderImages = function(number)
 {
 	this.topBar.innerHTML = "";
-	for(var i=0; i < number; i++)
+	for(var i=number-1; i >= 0; i--)
 	{
 		this.topBar.appendChild(this.tweets[i].smallImage);
 	}
