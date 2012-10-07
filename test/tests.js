@@ -1,6 +1,6 @@
 
 test( "Get Tweets in top bar", function() {
-	var lh = new LocationHandler(10, 100, 25);
+	var lh = new LocationHandler(null, 10, 100, 25);
 	equal(0, lh.getTweetsInTopBar(), "No tweets in top bar to start with" );
 	lh.setPosition(24);
 	equal(0, lh.getTweetsInTopBar(), "The tweet is still visible in tweet bar and shouldn't be shown" );
@@ -13,7 +13,7 @@ test( "Get Tweets in top bar", function() {
 });
 
 test( "Get Tweets in tweet bar", function() {
-	var lh = new LocationHandler(10, 100, 25);
+	var lh = new LocationHandler(null, 10, 100, 25);
 	equal(4, lh.getTweetsInTweetBar(), "Starts with 4 in tweet bar so should be size below");
 	lh.setPosition(1);
 	equal(5, lh.getTweetsInTweetBar(), "A tweet has snuck in the bottom");
@@ -24,7 +24,7 @@ test( "Get Tweets in tweet bar", function() {
 });
 
 test( "Get Tweets in bottom bar", function() {
-	var lh = new LocationHandler(10, 100, 25);
+	var lh = new LocationHandler(null, 10, 100, 25);
 	equal(6, lh.getTweetsInBottomBar(), "Starts with 4 in tweet bar so should be size below");
 	lh.setPosition(1);
 	equal(5, lh.getTweetsInBottomBar(), "One of the tweets in the bottom bar is now sneaking into main bar");
@@ -33,7 +33,7 @@ test( "Get Tweets in bottom bar", function() {
 });
 
 test( "Get Tweets in bottom bar", function() {
-	var lh = new LocationHandler(10,100,25);
+	var lh = new LocationHandler(null, 10,100,25);
 	equal(0, lh.getTweetPosition(0));
 	equal(25, lh.getTweetPosition(1));
 });
