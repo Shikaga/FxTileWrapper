@@ -30,17 +30,23 @@
 				lh.setPosition(e.scrollTop);
 				renderImages();
 			}
+			
+			function goTo()
+			{
+				var position = this.getAttribute("position");
+				lh.goToLocation(position);
+			}
 		
 			var tbh = new TopBarHandler(document.getElementById("topbar"));
 			var th = new TweetHandler(document.getElementById("tweets"));
 			var bbh = new BottomBarHandler(document.getElementById("bottombar"));
-			var lh = new LocationHandler(numberOfTweets,200,60);
+			var lh = new LocationHandler(th, numberOfTweets,200,60);
 			
 			
 			var tweets = [];
 			for (var i=0; i < numberOfTweets; i++)
 			{
-				tweets.push(new Tweet(pairs[i]));
+				tweets.push(new Tweet(i, pairs[i], goTo));
 			}
 			th.addTweets(tweets);
 			tbh.addTweets(tweets);

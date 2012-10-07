@@ -31,3 +31,9 @@ test( "Get Tweets in bottom bar", function() {
 	lh.setPosition(25);
 	equal(5, lh.getTweetsInBottomBar(), "Perfect Fit");
 });
+
+test( "Get Tweets in bottom bar", function() {
+	var lh = new LocationHandler(10,100,25);
+	equal(0, lh.getTweetPosition(0));
+	equal(25, lh.getTweetPosition(1));
+});

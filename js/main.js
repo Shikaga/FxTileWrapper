@@ -8,8 +8,9 @@ function add(number1, number2)
 * It calculates this based on TweetBar size, Tweet Size and number of tweets
 */
 
-var LocationHandler = function(numberOfTweets,sizeOfTweetBar,sizeOfTweets)
+var LocationHandler = function(tweetHandler, numberOfTweets,sizeOfTweetBar,sizeOfTweets)
 {
+	this.tweetHandler = tweetHandler;
 	this.currentPosition = 0; //In pixels
 	this.numberOfTweets = numberOfTweets; 
 	this.sizeOfTweetBar = sizeOfTweetBar; //In pixels
@@ -42,6 +43,17 @@ LocationHandler.prototype.getTweetsInBottomBar = function()
 {
 	
 	return this.numberOfTweets - this.getTweetsInTweetBar() - this.getTweetsInTopBar();
+}
+
+LocationHandler.prototype.getTweetPosition = function(index)
+{	
+	return index * this.sizeOfTweets;
+}
+
+LocationHandler.prototype.goToLocation = function(index) 
+{
+	console.log(this);
+	this.tweetHandler.tweetBar.scrollTop = this.getTweetPosition(index);
 }
 
 /**
@@ -106,13 +118,14 @@ BottomBarHandler.prototype.renderImages = function(number)
 	}
 }
 
-var Tweet = function(fx)
+var Tweet = function(index, fx, callback)
 {
-	this.smallImage = getSmallImage(fx);
+	this.index = index;
+	this.smallImage = getSmallImage(index, fx,callback);
 	this.largeImage = getLargeImage(fx);
 }
 
-function getSmallImage(fx)
+function getSmallImage(index, fx,callback)
 {
 	var image = document.createElement("span");
 	image.innerHTML=fx.substr(0,3) + "<br />" + fx.substr(3)
@@ -123,6 +136,8 @@ function getSmallImage(fx)
 	image.style["font-size"] = "8px";
 	image.style["background-color"] = "black";
 	image.style["margin"] = "5px";
+	image.setAttribute("position", index);
+	image.onclick=callback;
 	return image;
 }
 
@@ -130,7 +145,7 @@ function getSmallImage(fx)
 function getLargeImage(fx)
 {
 	var image = document.createElement("div");
-	image.style["height"] = "60px";
+	image.style["height"] = "58px";
 	image.style["border"] = "1px solid black";
 	
 	var buyButton = document.createElement("button");
