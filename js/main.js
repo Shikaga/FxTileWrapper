@@ -95,7 +95,7 @@ TopBarHandler.prototype.renderImages = function(number)
     this.topBar.innerHTML = "";
     var numberOfImagesToDisplay = this.getNumberOfImagesToDisplay(number);
     console.log("Requested", number, "index: ", 0, "displayed", numberOfImagesToDisplay);
-    for(var i=0; i < numberOfImagesToDisplay; i++)
+    for(var i=numberOfImagesToDisplay-1; i >= 0 ; i--)
     {
 	this.topBar.appendChild(this.tweets[i].smallImage);
     }
