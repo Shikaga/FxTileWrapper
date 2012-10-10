@@ -65,7 +65,7 @@ var TopBarHandler = function(element)
 	this.topBar = element;
 }
 
-TopBarHandler.prototype.addTweets = function(tweets)
+TopBarHandler.prototype.setTweets = function(tweets)
 {
 	this.tweets = tweets;
 }
@@ -87,7 +87,7 @@ var TweetHandler = function(element)
 	this.tweetBar = element;
 }
 
-TweetHandler.prototype.addTweets = function(tweets)
+TweetHandler.prototype.setTweets = function(tweets)
 {
 	for (tweetId in tweets)
 	{
@@ -98,49 +98,128 @@ TweetHandler.prototype.addTweets = function(tweets)
 /**
 * This class handles what images are shown in the bottom bar.
 */
-var BottomBarHandler = function(element)
+var BottomBarHandler = function(element, width, rollover)
 {
-	this.bottomBar = element;
+    this.bottomBar = element;
+    this.bottomBarWidth = width;
+    this.rollover = rollover;
 }
 
-BottomBarHandler.prototype.addTweets = function(tweets)
+BottomBarHandler.prototype.setTweets = function(tweets)
 {
 	this.tweets = tweets;
 }
 
 BottomBarHandler.prototype.renderImages = function(number)
 {
-	this.bottomBar.innerHTML = "";
-	var startIndex = this.tweets.length - number;
-	for(var i=startIndex; i < startIndex+number; i++)
-	{
-		this.bottomBar.appendChild(this.tweets[i].smallImage);
-	}
+    this.bottomBar.innerHTML = "";
+    var startIndex = this.getIndex(number);
+    var numberOfImagesToDisplay = this.getNumberOfImagesToDisplay(number);
+    console.log("Requested", number, "index: ", startIndex, "displayed", numberOfImagesToDisplay);
+    for(var i=startIndex; i < startIndex+numberOfImagesToDisplay; i++)
+    {
+	this.bottomBar.appendChild(this.tweets[i].smallImage);
+    }
+    if (number > numberOfImagesToDisplay) {
+	this.bottomBar.appendChild(this.rollover.getRollover("" + (number-numberOfImagesToDisplay)));
+    }
+}
+
+BottomBarHandler.prototype.getIndex = function(number)
+{
+	return this.tweets.length - number;
+}
+
+BottomBarHandler.prototype.getTotalLengthOfTweets = function(number)
+{
+    if (this.tweets == null) return 0;
+    var length = 0;
+    var index = this.getIndex(number);
+    for (var i=index; i < this.tweets.length; i++)
+    {
+	length += this.tweets[i].smallImageWidth;
+    }
+    return length;
+}
+
+BottomBarHandler.prototype.getNumberOfImagesToDisplay = function(number)
+{
+    if (this.tweets == undefined) return 0;
+    var tweetLength = this.getTotalLengthOfTweets(number);
+    var numberOfTweets = Math.floor((this.bottomBarWidth - this.rollover.width) / this.tweets[0].smallImageWidth);
+    if (numberOfTweets > number) return number;
+    if (tweetLength <= this.bottomBarWidth) return number;
+    return numberOfTweets;
+}
+
+var RolloverIndicator = function()
+{
+    this.width = 30; //pixels;
+    this.height = 30; //pixels
+}
+
+RolloverIndicator.prototype.getRollover = function(number)
+{
+    return getRolloverImage(number);
 }
 
 var Tweet = function(index, fx, callback)
 {
-	this.index = index;
-	this.smallImage = getSmallImage(index, fx,callback);
-	this.largeImage = getLargeImage(fx);
+    this.index = index;
+    this.smallImage = getSmallImage(index, fx,callback);
+    this.largeImage = getLargeImage(fx);
+    this.largeImageHeight = 60; //pixels
+    this.smallImageWidth = 30; //pixels including margin
+
+}
+
+function getRolloverImage(number)
+{
+    var image = document.createElement("span");
+    image.style["height"] = "20px";
+    image.style["width"] = "20px";
+    image.style["display"] = "inline-block";
+    image.style["color"] = "white";
+    image.style["font-size"] = "13px";
+    image.style["background-color"] = "black";
+    image.style["margin"] = "5px";
+    
+    var div = document.createElement("div");
+    div.innerHTML = "&nbsp;+" + number;
+    div.style["float"] = "left";
+    div.style["height"] = "20px";
+
+    image.appendChild(div);
+
+    return image;
 }
 
 function getSmallImage(index, fx,callback)
 {
-	var image = document.createElement("span");
-	image.innerHTML=fx.substr(0,3) + "<br />" + fx.substr(3)
-	image.style["height"] = "20px";
-	image.style["width"] = "20px";
-	image.style["display"] = "inline-block";
-	image.style["color"] = "white";
-	image.style["font-size"] = "8px";
-	image.style["background-color"] = "black";
-	image.style["margin"] = "5px";
-	image.setAttribute("position", index);
-	image.onclick=callback;
-	return image;
-}
+    var image = document.createElement("span");
+    image.style["height"] = "20px";
+    image.style["width"] = "20px";
+    image.style["display"] = "inline-block";
+    image.style["color"] = "white";
+    image.style["font-size"] = "8px";
+    image.style["background-color"] = "black";
+    image.style["margin"] = "5px";
+    image.setAttribute("position", index);
+    image.onclick=callback;
+    
+    var div = document.createElement("div");
+    div.innerHTML = fx.substr(0,3);
+    div.style["float"] = "left";
 
+    var div2 = document.createElement("div");
+    div2.innerHTML = fx.substr(3);
+    div2.style["float"] = "left";
+
+    image.appendChild(div);
+    image.appendChild(div2);
+
+    return image;
+}
 
 function getLargeImage(fx)
 {

@@ -16,7 +16,7 @@
 			"AUDUSD", "USDJPY", "EURCAD", "EURAUD", "EURJPY", "EURCHF",
 			"EURGBP", "AUDCAD", "EURGBP", "AUDCAD", "GBPCHF", "GBPJPY",
 			"CHFJPY", "AUDJPY", "AUDNZD"];
-			var numberOfTweets = 10;
+			var numberOfTweets = 15;
 			function renderImages()
 			{
 				var topNumber = lh.getTweetsInTopBar();
@@ -39,7 +39,9 @@
 		
 			var tbh = new TopBarHandler(document.getElementById("topbar"));
 			var th = new TweetHandler(document.getElementById("tweets"));
-			var bbh = new BottomBarHandler(document.getElementById("bottombar"));
+			var bbh = new
+			BottomBarHandler(document.getElementById("bottombar"),220,
+			new RolloverIndicator());
 			var lh = new LocationHandler(th, numberOfTweets,200,60);
 			
 			
@@ -48,9 +50,9 @@
 			{
 				tweets.push(new Tweet(i, pairs[i], goTo));
 			}
-			th.addTweets(tweets);
-			tbh.addTweets(tweets);
-			bbh.addTweets(tweets);
+			th.setTweets(tweets);
+			tbh.setTweets(tweets);
+			bbh.setTweets(tweets);
 			renderImages();
 		</script>
 				
