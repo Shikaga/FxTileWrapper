@@ -37,11 +37,13 @@
 				lh.goToLocation(position);
 			}
 		
-			var tbh = new TopBarHandler(document.getElementById("topbar"));
+			var tbh = new
+			TopBarHandler(document.getElementById("topbar"),
+			220, new RolloverIndicator(), goTo);
 			var th = new TweetHandler(document.getElementById("tweets"));
 			var bbh = new
 			BottomBarHandler(document.getElementById("bottombar"),220,
-			new RolloverIndicator());
+			new RolloverIndicator(), goTo);
 			var lh = new LocationHandler(th, numberOfTweets,200,60);
 			
 			

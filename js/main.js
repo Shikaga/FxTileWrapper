@@ -57,29 +57,6 @@ LocationHandler.prototype.goToLocation = function(index)
 }
 
 /**
-* This class handles what images are shown in the top bar.
-*/
-
-var TopBarHandler = function(element)
-{
-	this.topBar = element;
-}
-
-TopBarHandler.prototype.setTweets = function(tweets)
-{
-	this.tweets = tweets;
-}
-
-TopBarHandler.prototype.renderImages = function(number)
-{
-	this.topBar.innerHTML = "";
-	for(var i=number-1; i >= 0; i--)
-	{
-		this.topBar.appendChild(this.tweets[i].smallImage);
-	}
-}
-
-/**
 * This class handles all the tweets in the scroll menu
 */
 var TweetHandler = function(element)
@@ -96,13 +73,67 @@ TweetHandler.prototype.setTweets = function(tweets)
 }
 
 /**
+* This class handles what images are shown in the top bar.
+*/
+
+var TopBarHandler = function(element, width, rollover, callback)
+{
+    this.width = width;
+    this.rollover = rollover;
+    this.topBar = element;
+    this.callback = callback;
+}
+
+
+TopBarHandler.prototype.setTweets = function(tweets)
+{
+	this.tweets = tweets;
+}
+
+TopBarHandler.prototype.renderImages = function(number)
+{
+    this.topBar.innerHTML = "";
+    var numberOfImagesToDisplay = this.getNumberOfImagesToDisplay(number);
+    console.log("Requested", number, "index: ", 0, "displayed", numberOfImagesToDisplay);
+    for(var i=0; i < numberOfImagesToDisplay; i++)
+    {
+	this.topBar.appendChild(this.tweets[i].smallImage);
+    }
+    if (number > numberOfImagesToDisplay) {
+	this.topBar.appendChild(this.rollover.getRollover("" + (number-numberOfImagesToDisplay), numberOfImagesToDisplay, this.callback));
+    }
+}
+
+TopBarHandler.prototype.getTotalLengthOfTweets = function(number)
+{
+    if (this.tweets == null) return 0;
+    var length = 0;
+    for (var i=0; i < number; i++)
+    {
+	length += this.tweets[i].smallImageWidth;
+    }
+    return length;
+}
+
+TopBarHandler.prototype.getNumberOfImagesToDisplay = function(number)
+{
+    if (this.tweets == undefined) return 0;
+    var tweetLength = this.getTotalLengthOfTweets(number);
+    var numberOfTweets = Math.floor((this.width - this.rollover.width) / this.tweets[0].smallImageWidth);
+    if (numberOfTweets > number) return number;
+    if (tweetLength <= this.width) return number;
+    return numberOfTweets;
+}
+
+/**
 * This class handles what images are shown in the bottom bar.
 */
-var BottomBarHandler = function(element, width, rollover)
+var BottomBarHandler = function(element, width, rollover, callback)
 {
     this.bottomBar = element;
     this.bottomBarWidth = width;
     this.rollover = rollover;
+    this.callback = callback;
 }
 
 BottomBarHandler.prototype.setTweets = function(tweets)
@@ -121,7 +152,7 @@ BottomBarHandler.prototype.renderImages = function(number)
 	this.bottomBar.appendChild(this.tweets[i].smallImage);
     }
     if (number > numberOfImagesToDisplay) {
-	this.bottomBar.appendChild(this.rollover.getRollover("" + (number-numberOfImagesToDisplay)));
+	this.bottomBar.appendChild(this.rollover.getRollover("" + (number-numberOfImagesToDisplay), numberOfImagesToDisplay+startIndex-1, this.callback));
     }
 }
 
@@ -158,9 +189,10 @@ var RolloverIndicator = function()
     this.height = 30; //pixels
 }
 
-RolloverIndicator.prototype.getRollover = function(number)
+RolloverIndicator.prototype.getRollover = function(number, index, callback)
 {
-    return getRolloverImage(number);
+    console.log(number);
+    return getRolloverImage(number, index, callback);
 }
 
 var Tweet = function(index, fx, callback)
@@ -173,7 +205,7 @@ var Tweet = function(index, fx, callback)
 
 }
 
-function getRolloverImage(number)
+function getRolloverImage(number, index, callback)
 {
     var image = document.createElement("span");
     image.style["height"] = "20px";
@@ -183,6 +215,8 @@ function getRolloverImage(number)
     image.style["font-size"] = "13px";
     image.style["background-color"] = "black";
     image.style["margin"] = "5px";
+    image.setAttribute("position", index);
+    image.onclick=callback;
     
     var div = document.createElement("div");
     div.innerHTML = "&nbsp;+" + number;
