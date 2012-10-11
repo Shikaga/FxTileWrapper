@@ -94,13 +94,14 @@ TopBarHandler.prototype.renderImages = function(number)
 {
     this.topBar.innerHTML = "";
     var numberOfImagesToDisplay = this.getNumberOfImagesToDisplay(number);
+    var rolloverNumber = number-numberOfImagesToDisplay;
     console.log("Requested", number, "index: ", 0, "displayed", numberOfImagesToDisplay);
-    for(var i=numberOfImagesToDisplay-1; i >= 0 ; i--)
+    for(var i=numberOfImagesToDisplay-1+rolloverNumber; i >= rolloverNumber ; i--)
     {
 	this.topBar.appendChild(this.tweets[i].smallImage);
     }
     if (number > numberOfImagesToDisplay) {
-	this.topBar.appendChild(this.rollover.getRollover("" + (number-numberOfImagesToDisplay), numberOfImagesToDisplay, this.callback));
+	this.topBar.appendChild(this.rollover.getRollover("" + rolloverNumber, numberOfImagesToDisplay, this.callback));
     }
 }
 
