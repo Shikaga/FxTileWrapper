@@ -20,3 +20,33 @@ a.testbar:link,a.testbar:visited,a.testbar:hover,a.testbar:active
 {
 	color:#528CE0;
 }
+
+.fxtile { /*Total height: 60px*/
+    height: 58px;
+    border: 1px solid black;
+}
+
+.buybutton, .sellbutton, .currencypair {
+    height: 50px;
+    width: 50px;
+}
+
+.fxicon {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    color: white;
+    font-size:8px;
+    background-color: black;
+    margin: 5px;
+}
+
+.fxiconrow {
+    float: left;
+}
+
+.rolloverrow {
+    float: left;
+    height: 20px;
+    font-size: 11px;
+}

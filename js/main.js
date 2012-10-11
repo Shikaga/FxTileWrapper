@@ -203,26 +203,18 @@ var Tweet = function(index, fx, callback)
     this.largeImage = getLargeImage(fx);
     this.largeImageHeight = 60; //pixels
     this.smallImageWidth = 30; //pixels including margin
-
 }
 
 function getRolloverImage(number, index, callback)
 {
     var image = document.createElement("span");
-    image.style["height"] = "20px";
-    image.style["width"] = "20px";
-    image.style["display"] = "inline-block";
-    image.style["color"] = "white";
-    image.style["font-size"] = "13px";
-    image.style["background-color"] = "black";
-    image.style["margin"] = "5px";
+    image.className = "fxicon";
     image.setAttribute("position", index);
     image.onclick=callback;
     
     var div = document.createElement("div");
+    div.className = "rolloverrow";
     div.innerHTML = "&nbsp;+" + number;
-    div.style["float"] = "left";
-    div.style["height"] = "20px";
 
     image.appendChild(div);
 
@@ -232,24 +224,18 @@ function getRolloverImage(number, index, callback)
 function getSmallImage(index, fx,callback)
 {
     var image = document.createElement("span");
-    image.style["height"] = "20px";
-    image.style["width"] = "20px";
-    image.style["display"] = "inline-block";
-    image.style["color"] = "white";
-    image.style["font-size"] = "8px";
-    image.style["background-color"] = "black";
-    image.style["margin"] = "5px";
+    image.className = "fxicon";
     image.setAttribute("position", index);
     image.onclick=callback;
     
     var div = document.createElement("div");
+    div.className = "fxiconrow";
     div.innerHTML = fx.substr(0,3);
-    div.style["float"] = "left";
-
+    
     var div2 = document.createElement("div");
+    div2.className = "fxiconrow";
     div2.innerHTML = fx.substr(3);
-    div2.style["float"] = "left";
-
+    
     image.appendChild(div);
     image.appendChild(div2);
 
@@ -258,29 +244,25 @@ function getSmallImage(index, fx,callback)
 
 function getLargeImage(fx)
 {
-	var image = document.createElement("div");
-	image.style["height"] = "58px";
-	image.style["border"] = "1px solid black";
+    var image = document.createElement("div");
+    image.className = "fxtile";
+
+    var buyButton = document.createElement("button");
+    buyButton.className="buybutton";
+    buyButton.innerHTML = "BUY!";
+    image.appendChild(buyButton);
 	
-	var buyButton = document.createElement("button");
-	buyButton.innerHTML = "BUY!";
-	buyButton.style["height"] = "50px";
-	buyButton.style["width"] = "50px";
-	image.appendChild(buyButton);
+    var currencyPair = document.createElement("span");
+    currencyPair.className="currencypair";
+    currencyPair.innerHTML = fx;
+    image.appendChild(currencyPair);
 	
-	var currencyPair = document.createElement("span");
-	currencyPair.innerHTML = fx;
-	currencyPair.style["height"] = "50px";
-	currencyPair.style["width"] = "50px";
-	image.appendChild(currencyPair);
-	
-	var sellButton = document.createElement("button");
-	sellButton.innerHTML = "SELL!";
-	sellButton.style["height"] = "50px";
-	sellButton.style["width"] = "50px";
-	image.appendChild(sellButton);
-	
-	return image;
+    var sellButton = document.createElement("button");
+    sellButton.className="sellbutton";
+    sellButton.innerHTML = "SELL!";
+    image.appendChild(sellButton);
+    
+    return image;
 }
 
 //Array of images
